@@ -1,0 +1,6 @@
+pre/*
+!pre/template.sh
+post/*
+!post/template.sh
+run/*
+!run/template.sh
