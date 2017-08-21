@@ -35,7 +35,7 @@ function usage () {
 	echo "Notice:"
 	echo "	destination directory will need absolute path"
 	echo "Example:"
-	echo "	$SELF -d $PWD -m reciever -n VRV951BXAC34-23-B"
+	echo "	$SELF -d $PWD -m reciever"
 	echo "	-p fetch.sh -r run.sh -a post.sh"
 	exit -1
 }
@@ -55,17 +55,31 @@ function main () {
 	#afterwards script, must contain `COMPLETE`
 	if [ ! -z $AFTWARD_SCRIPT ]; then
 		source $AFTWARD_SCRIPT
+	else
+		COMPLETE=-1
 	fi
-	COMPLETE=0
 
 	if [ ! -z $RCPT ]; then
 		if [ $COMPLETE -ge 0 ]; then
-			/bin/mail -s "[AB&CD] compiled successful!" `/bin/cat $RCPT` << _EOT
+			/bin/mail -s "[AB&CD] $PROJ compiled successful!" `/bin/cat $RCPT` << _EOT
 This is buildbot@$HOST
 The project "$PROJ" has fully compiled with the latest commit.
 Last 24 hours changes:
 ===
 `$GIT --git-dir=$GIT_DIR --work-tree=$GIT_WORK_TREE log --date=short --format="[%h]%ad.%aN: %s" --since="24 hours ago"`
+===
+_EOT
+		else
+			/bin/mail -s "[AB&CD] $PROJ compiled failed!" `/bin/cat $RCPT` << _EOT
+This is buildbot@$HOST
+The project "$PROJ" compiled failed with the latest commit.
+Last 24 hours changes:
+===
+`$GIT --git-dir=$GIT_DIR --work-tree=$GIT_WORK_TREE log --date=short --format="[%h]%ad.%aN: %s" --since="24 hours ago"`
+===
+and the failed build log:
+===
+`/usr/bin/tail -n 80 $GIT_WORK_TREE/$LOG`
 ===
 _EOT
 		fi
