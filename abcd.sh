@@ -52,6 +52,10 @@ function main () {
 	if [ ! -z $COMPILE_SCRIPT ]; then
 		source $COMPILE_SCRIPT $LOG
 	fi
+	if [ $RET_CODE -eq 99 ]; then
+		echo "SKIP COMPILATION FOR REASONS: no commits"
+		return ;
+	fi
 	#afterwards script, must contain `COMPLETE`
 	if [ ! -z $AFTWARD_SCRIPT ]; then
 		source $AFTWARD_SCRIPT
