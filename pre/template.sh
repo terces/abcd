@@ -12,4 +12,4 @@ GIT_WORK_TREE=""
 # start your implementation
 
 # recovery directory
-cd -
+cd $BUILD_ROOT

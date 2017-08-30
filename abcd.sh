@@ -41,14 +41,16 @@ function usage () {
 }
 
 function main () {
+	BUILD_ROOT=$PWD
 	#initial script, must contain `PROJ`, `GIT_DIR`, and `GIT_WORK_TREE`
 	if [ ! -z $PREPARE_SCRIPT ]; then
 		source $PREPARE_SCRIPT $DEST
 	fi
-	#compile script, must contain `RET_CODE` and make compile log
+	#initial logging file filename if not assigned
 	if [ -z $LOG ]; then
 		LOG=$PROJ-`/bin/date +"%Y%m%d%H"`.log
 	fi
+	#compile script, must contain `RET_CODE` and make compile log
 	if [ ! -z $COMPILE_SCRIPT ]; then
 		source $COMPILE_SCRIPT $LOG
 	fi

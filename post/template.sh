@@ -10,4 +10,4 @@ COMPLETE=0
 # start your implementation
 
 # recovery directory
-cd -
+cd $BUILD_ROOT
